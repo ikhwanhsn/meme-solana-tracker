@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <nav className="navbar bg-background text-text shadow-md px-12 fixed z-30 top-0 left-0">
+    <nav className="navbar bg-background text-text shadow-md md:px-12 px-3 fixed z-30 top-0 left-0">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -50,7 +50,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn text-white">Connect Wallet</a>
+        <a className="btn text-white hidden md:block">Connect Wallet</a>
       </div>
     </nav>
   );

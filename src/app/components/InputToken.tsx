@@ -46,7 +46,7 @@ const InputToken = () => {
       alert("Please enter token address");
       return;
     }
-    if (tokenAddress.length !== 44) {
+    if (tokenAddress.length < 30) {
       alert("Please enter valid token address");
       return;
     }
@@ -58,14 +58,14 @@ const InputToken = () => {
   };
 
   return (
-    <main className=" bg-background text-text mt-24 w-fit mx-auto">
-      <section className="space-x-1 mb-4 mx-auto w-fit">
+    <main className=" bg-background text-text mt-24 w-full mx-auto">
+      <section className="grid grid-cols-5 w-full md:w-2/5 gap-x-1 mb-4 mx-auto px-3 md:px-0">
         <input
           type="text"
           placeholder="Paste your token address here..."
           onChange={(e) => setTokenAddress(e.target.value)}
           value={tokenAddress}
-          className="input w-96 text-text input-bordered bg-white"
+          className="input text-text input-bordered bg-white col-span-3"
         />
         <button className="btn btn-primary text-white" onClick={track}>
           Track
