@@ -49,8 +49,8 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn text-white hidden md:block">Connect Wallet</a>
+      <div className="navbar-end hidden md:flex">
+        <a className="btn text-white">Connect Wallet</a>
       </div>
     </nav>
   );
