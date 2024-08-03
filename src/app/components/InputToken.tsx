@@ -27,6 +27,12 @@ const InputToken = () => {
       url: `https://app.bubblemaps.io/sol/token/${tokenAddress}`,
     },
   ];
+  const dataMedsos = [
+    {
+      name: "X Shill",
+      url: `https://x.com/search?q=${tokenAddress}&src=typed_query`,
+    },
+  ];
   const dataExchanges = [
     {
       name: "Raydium",
@@ -90,6 +96,17 @@ const InputToken = () => {
           {dataExchanges.map((item, index) => (
             <a key={index} href={item.url} target="_blank">
               <button className="btn btn-info text-white w-28">
+                {item.name}
+              </button>
+            </a>
+          ))}
+        </section>
+      )}
+      {isTokenActive && (
+        <section className="mx-auto w-fit space-x-1 mt-2">
+          {dataMedsos.map((item, index) => (
+            <a key={index} href={item.url} target="_blank">
+              <button className="btn btn-secondary text-white w-28">
                 {item.name}
               </button>
             </a>
