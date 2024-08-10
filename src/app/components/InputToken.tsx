@@ -29,6 +29,10 @@ const InputToken = () => {
   ];
   const dataMedsos = [
     {
+      name: "X Analytics",
+      url: `https://twitterscore.io/twitter/neirowoof/overview/`,
+    },
+    {
       name: "X Shill",
       url: `https://x.com/search?q=${tokenAddress}&src=typed_query`,
     },
