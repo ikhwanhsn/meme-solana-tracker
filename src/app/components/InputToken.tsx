@@ -1,10 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getTokenByAddress } from "../services/getTokenByAddress";
+import { getTokenByQuery } from "../services/getTokenByQuery";
 
 const InputToken = () => {
   const [tokenAddress, setTokenAddress] = useState("");
+  const [dataToken, setDataToken] = useState<any>(null);
+  const [symbolToken, setSymbolToken] = useState("");
+  const [twitterToken, setTwitterToken] = useState("");
+  const [usernameTwitter, setUsernameTwitter] = useState("");
+  const [usernameTwitterAlt, setUsernameTwitterAlt] = useState("");
+  const [listToken, setListToken] = useState<any>(null);
   const [isTokenActive, setIsTokenActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dataTools = [
     {
       name: "Dexscreener",
@@ -29,12 +38,20 @@ const InputToken = () => {
   ];
   const dataMedsos = [
     {
-      name: "X Analytics",
-      url: `https://twitterscore.io/twitter/neirowoof/overview/`,
+      name: "X Account",
+      url: `${twitterToken}`,
     },
     {
-      name: "X Shill",
+      name: "X Analytics",
+      url: `https://twitterscore.io/twitter/${usernameTwitter}/overview/`,
+    },
+    {
+      name: "X Shill (CA)",
       url: `https://x.com/search?q=${tokenAddress}&src=typed_query`,
+    },
+    {
+      name: "X Shill (Tick)",
+      url: `https://x.com/search?q=$${symbolToken}&src=typed_query`,
     },
   ];
   const dataExchanges = [
@@ -51,7 +68,7 @@ const InputToken = () => {
       url: `https://photon-sol.tinyastro.io/en/lp/${tokenAddress}`,
     },
   ];
-  const track = () => {
+  const track = async () => {
     if (!tokenAddress) {
       alert("Please enter token address");
       return;
@@ -60,12 +77,32 @@ const InputToken = () => {
       alert("Please enter valid token address");
       return;
     }
+    setIsLoading(true);
+    const data = await getTokenByAddress(tokenAddress);
+    const token = await getTokenByQuery("neiro");
+    const dataTwitter = await data.data.pairs[0].info.socials;
+    const twitter = dataTwitter.find((tweet: any) => tweet.type === "twitter");
+    const twitterAlt = data.data.pairs[0].baseToken.name;
+    const twitterUsername =
+      twitter?.url?.replace("https://x.com/", "") || twitterAlt;
+    setDataToken(data);
+    setSymbolToken(data.data.pairs[0].baseToken.symbol);
+    setUsernameTwitterAlt(twitterAlt);
+    setTwitterToken(twitter?.url || `https://x.com/${twitterAlt}`);
+    setUsernameTwitter(twitterUsername);
+    setListToken(token);
     setIsTokenActive(true);
+    setIsLoading(false);
   };
   const clear = () => {
     setTokenAddress("");
     setIsTokenActive(false);
   };
+
+  useEffect(() => {
+    // console.log(dataToken);
+    // console.log(listToken);
+  }, [dataToken, listToken]);
 
   return (
     <main className=" bg-background text-text mt-24 w-full mx-auto">
@@ -84,6 +121,8 @@ const InputToken = () => {
           Clear
         </button>
       </section>
+
+      {isLoading && <center>Loading...</center>}
       {isTokenActive && (
         <section className="mx-auto space-x-1 w-fit">
           {dataTools.map((item, index) => (
@@ -97,9 +136,9 @@ const InputToken = () => {
       )}
       {isTokenActive && (
         <section className="mx-auto w-fit space-x-1 mt-2">
-          {dataExchanges.map((item, index) => (
+          {dataMedsos.map((item, index) => (
             <a key={index} href={item.url} target="_blank">
-              <button className="btn btn-info text-white w-28">
+              <button className="btn btn-secondary text-white w-32">
                 {item.name}
               </button>
             </a>
@@ -108,9 +147,9 @@ const InputToken = () => {
       )}
       {isTokenActive && (
         <section className="mx-auto w-fit space-x-1 mt-2">
-          {dataMedsos.map((item, index) => (
+          {dataExchanges.map((item, index) => (
             <a key={index} href={item.url} target="_blank">
-              <button className="btn btn-secondary text-white w-28">
+              <button className="btn btn-info text-white w-28">
                 {item.name}
               </button>
             </a>
